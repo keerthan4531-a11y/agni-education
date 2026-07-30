@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Brain, Trash2, Copy, BookOpen, Zap, RotateCcw, ChevronDown } from 'lucide-react';
-import { ollamaChat } from '../services/ollama';
+import { aiChat } from '../services/ai';
 import ReactMarkdown from 'react-markdown';
 
 const SYSTEM_PROMPT_EN = `You are AGNI, an advanced AI study mentor for Indian students preparing for competitive exams like NEET, JEE, UPSC, TNPSC, SSC, and placement exams (TCS, Infosys, Wipro, etc.).
@@ -160,13 +160,13 @@ What do you want to study today?`;
       const history = buildHistory();
       history.push({ role: 'user', content: userText });
 
-      await ollamaChat(history, (_, fullText) => {
+      await aiChat(history, (_, fullText) => {
         setMessages(prev => prev.map(m => m.ts === aiMsgId ? { ...m, content: fullText, loading: false } : m));
       });
     } catch (err) {
       setMessages(prev => prev.map(m =>
         m.ts === aiMsgId
-          ? { ...m, content: `**AI Error:** ${err.message}\n\n> Make sure Ollama is running: \`ollama serve\`\n> Then: \`ollama run gemini-3-flash-preview\``, loading: false }
+          ? { ...m, content: `**AI Error:** ${err.message}\n\nPlease try again later.`, loading: false }
           : m
       ));
     } finally {

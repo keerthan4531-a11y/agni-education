@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Zap, RefreshCw, CheckCircle, Sun, Sunset, Moon, Star, Clock } from 'lucide-react';
-import { ollamaGenerate } from '../services/ollama';
+import { aiGenerate } from '../services/ai';
 import { DAILY_PLAN_TEMPLATE } from '../data/examData';
 
 const GOALS = [
@@ -61,10 +61,10 @@ Be specific with subject names, chapter names, and time allocation. Make it acti
 
     try {
       let result = '';
-      await ollamaGenerate(prompt, (_, full) => { result = full; });
+      await aiGenerate(prompt, (_, full) => { result = full; });
       setPlan(result);
     } catch (err) {
-      setPlan(`**Error generating plan:** ${err.message}\n\nPlease ensure Ollama is running with: \`ollama serve\``);
+      setPlan(`**Error generating plan:** ${err.message}\n\nPlease try again later.`);
     } finally {
       setLoading(false);
     }

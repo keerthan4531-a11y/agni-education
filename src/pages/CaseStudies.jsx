@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, Stethoscope, ChevronRight, Send, Loader2 } from 'lucide-react';
-import { ollamaChat } from '../services/ollama';
+import { aiChat } from '../services/ai';
 import ReactMarkdown from 'react-markdown';
 
 const CaseStudies = ({ lang = 'en' }) => {
@@ -31,10 +31,10 @@ Present the case natively in ${lang === 'ta' ? 'Tamil' : 'English'} to the stude
     
     try {
       let fullRaw = '';
-      await ollamaChat([{ role: 'system', content: systemPrompt }, { role: 'user', content: 'Present the case to me.' }], (_, text) => { fullRaw = text; });
+      await aiChat([{ role: 'system', content: systemPrompt }, { role: 'user', content: 'Present the case to me.' }], (_, text) => { fullRaw = text; });
       setMessages([{ role: 'ai', content: fullRaw }]);
     } catch(e) {
-      setMessages([{ role: 'ai', content: 'Error loading case. Is Ollama running?' }]);
+      setMessages([{ role: 'ai', content: 'Error connecting to AI service.' }]);
     }
     setLoading(false);
   };
@@ -53,7 +53,7 @@ Present the case natively in ${lang === 'ta' ? 'Tamil' : 'English'} to the stude
           { role: 'system', content: `You are solving a mystery case study with a student natively in ${lang === 'ta' ? 'Tamil' : 'English'}. Never give the full answer outright. Socratic method only.` },
           ...newHistory
       ];
-      await ollamaChat(chatHistory, (_, text) => {
+      await aiChat(chatHistory, (_, text) => {
           setMessages([...newHistory, { role: 'ai', content: text }]);
       });
     } catch(e) {

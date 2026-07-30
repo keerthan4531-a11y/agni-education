@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Network, Loader2, ArrowRight } from 'lucide-react';
-import { ollamaGenerate } from '../services/ollama';
+import { aiGenerate } from '../services/ai';
 
 const MindMap = ({ lang = 'en' }) => {
   const [topic, setTopic] = useState('');
@@ -24,7 +24,7 @@ Do not include any other markdown or text. Just the indented list.`;
 
     try {
       let raw = '';
-      await ollamaGenerate(prompt, (_, text) => { raw = text; });
+      await aiGenerate(prompt, (_, text) => { raw = text; });
       const nodes = raw.split('\n').filter(l => l.trim()).map(line => {
         const level = (line.match(/^-+/) || [''])[0].length;
         return { label: line.replace(/^-+\s*/, ''), level };

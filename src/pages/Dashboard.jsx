@@ -5,7 +5,7 @@ import {
   Calendar, CheckCircle, AlertCircle, Play, Download, BarChart3,
   PlayCircle, Network, Search
 } from 'lucide-react';
-import { checkOllamaStatus } from '../services/ollama';
+import { checkAIStatus } from '../services/ai';
 
 const Dashboard = ({ userGoal, setPage }) => {
   const [aiOnline, setAiOnline] = useState(null);
@@ -19,7 +19,7 @@ const Dashboard = ({ userGoal, setPage }) => {
     else if (h < 17) setGreeting('Good Afternoon');
     else setGreeting('Good Evening');
 
-    checkOllamaStatus().then(s => setAiOnline(s.online));
+    checkAIStatus().then(s => setAiOnline(s.online));
   }, []);
 
   const stats = [
@@ -71,7 +71,7 @@ const Dashboard = ({ userGoal, setPage }) => {
               borderRadius: 20, fontSize: '0.7rem', fontWeight: 600,
               color: aiOnline ? 'var(--neon-green)' : 'var(--neon-red)',
             }}>
-              {aiOnline === null ? 'Checking AI...' : aiOnline ? 'AI Online' : 'AI Offline - Start Ollama'}
+              {aiOnline === null ? 'Checking AI...' : aiOnline ? 'AI Online ✨' : 'AI Offline'}
             </div>
           </div>
           <h1 style={{ fontFamily: 'var(--font-head)', fontSize: '1.7rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 6 }}>

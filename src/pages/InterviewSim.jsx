@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Mic, MicOff, Volume2, VolumeX, Briefcase, Bot, Loader2, Award, ChevronRight } from 'lucide-react';
-import { ollamaChat } from '../services/ollama';
+import { aiChat } from '../services/ai';
 
 const InterviewSim = ({ lang = 'en' }) => {
   const [phase, setPhase] = useState('lobby'); // lobby -> interview -> results
@@ -86,7 +86,7 @@ const InterviewSim = ({ lang = 'en' }) => {
     
     try {
       let fullRaw = '';
-      await ollamaChat([{ role: 'system', content: systemPrompt }, { role: 'user', content: 'Start the interview.' }], (_, text) => { fullRaw = text; });
+      await aiChat([{ role: 'system', content: systemPrompt }, { role: 'user', content: 'Start the interview.' }], (_, text) => { fullRaw = text; });
       setMessages([{ role: 'ai', content: fullRaw }]);
       speak(fullRaw);
     } catch(e) {
@@ -109,7 +109,7 @@ const InterviewSim = ({ lang = 'en' }) => {
           ...newHistory
       ];
       let fullRaw = '';
-      await ollamaChat(chatHistory, (_, text) => { fullRaw = text; });
+      await aiChat(chatHistory, (_, text) => { fullRaw = text; });
       setMessages([...newHistory, { role: 'ai', content: fullRaw }]);
       speak(fullRaw);
     } catch(e) { /* ignored */ }

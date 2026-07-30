@@ -4,7 +4,7 @@ import {
   Clock, BarChart3, RotateCcw, Zap, Target, AlertCircle, Brain, PenLine
 } from 'lucide-react';
 import { SAMPLE_QUESTIONS, EXAM_CATEGORIES } from '../data/examData';
-import { ollamaGenerate } from '../services/ollama';
+import { aiGenerate } from '../services/ai';
 
 const ALL_QUESTIONS = [
   ...SAMPLE_QUESTIONS.neet_physics,
@@ -122,7 +122,7 @@ const MockTest = ({ lang = 'en' }) => {
     setAiLoading(p => ({ ...p, [qi]: true }));
     try {
       let result = '';
-      await ollamaGenerate(
+      await aiGenerate(
         `Exam tutor: Explain this MCQ briefly (3-4 lines, simple language):\nQ: ${q.question}\nCorrect: ${q.options[q.correct]}\nTopic: ${q.topic}\nExplain why correct + why others are wrong.`,
         (_, full) => { result = full; }
       );
@@ -157,7 +157,7 @@ Generate all ${aiGenCount} questions now:`;
 
     try {
       let raw = '';
-      await ollamaGenerate(prompt, (_, full) => { raw = full; });
+      await aiGenerate(prompt, (_, full) => { raw = full; });
       const parsed = parseAIQuestions(raw);
       if (parsed.length === 0) {
         setAiGenError(t('Could not parse questions. Try again.', 'கேள்விகள் உருவாக்க முடியவில்லை. மீண்டும் முயலவும்.'));
@@ -166,7 +166,7 @@ Generate all ${aiGenCount} questions now:`;
         startTest(null, parsed);
       }
     } catch (err) {
-      setAiGenError(`Error: ${err.message} — ${t('Make sure Ollama is running', 'Ollama இயங்கும் நிலையில் உள்ளதா என சரிபார்க்கவும்')}`);
+      setAiGenError(`Error: ${err.message} — ${t('AI service error. Please try again.', 'AI சேவை பிழை. மீண்டும் முயலவும்.')}`);
     } finally {
       setAiGenLoading(false);
     }
@@ -265,7 +265,7 @@ Generate all ${aiGenCount} questions now:`;
                     : <><Brain size={18} /> {t('Generate & Start Test', 'உருவாக்கி தேர்வு தொடங்கு')}</>}
                 </button>
                 <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center' }}>
-                  {t('Requires Ollama running with gemini-3-flash-preview', 'Ollama gemini-3-flash-preview மாடலுடன் இயங்க வேண்டும்')}
+                  {t('Powered by AGNI AI Engine', 'AGNI AI இயந்திரத்தால் இயக்கப்படுகிறது')}
                 </p>
               </div>
             </div>

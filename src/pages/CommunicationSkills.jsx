@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Mic, MessageSquare, CheckCircle, RotateCcw, Volume2, Brain, Star, Users } from 'lucide-react';
-import { ollamaGenerate } from '../services/ollama';
+import { aiGenerate } from '../services/ai';
 
 const HR_QUESTIONS = [
   "Tell me about yourself.",
@@ -56,7 +56,7 @@ const CommunicationSkills = () => {
     setAiFeedback('');
     try {
       let result = '';
-      await ollamaGenerate(
+      await aiGenerate(
         `You are a professional HR interview coach at a top IT company. Evaluate this answer:
 
 Question: "${HR_QUESTIONS[currentQ]}"
@@ -74,7 +74,7 @@ Be honest but encouraging. Use simple English.`,
       );
       setAiFeedback(result);
     } catch (err) {
-      setAiFeedback(`Error: ${err.message}. Please ensure Ollama is running.`);
+      setAiFeedback(`Error: ${err.message}. Please try again later.`);
     }
     setLoading(false);
   };
@@ -85,7 +85,7 @@ Be honest but encouraging. Use simple English.`,
     setAiFeedback('');
     try {
       let result = '';
-      await ollamaGenerate(
+      await aiGenerate(
         `You are a UPSC essay coach. Evaluate this essay written by an IAS aspirant:
 
 Topic: "${ESSAY_TOPICS[essayTopic]}"
@@ -115,7 +115,7 @@ Be detailed and UPSC-specific.`,
     setAiFeedback('');
     try {
       let result = '';
-      await ollamaGenerate(
+      await aiGenerate(
         `Prepare a Group Discussion guide for the topic: "${topic}"
 
 Include:
@@ -141,7 +141,7 @@ Keep it sharp and ready to use in actual GD.`,
     setAiFeedback('');
     try {
       let result = '';
-      await ollamaGenerate(
+      await aiGenerate(
         `Give me today's spoken English lesson for a Tamil-speaking engineering student preparing for IT placement interviews.
 
 Include:

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Camera, Upload, Sparkles, Loader2, Image as ImageIcon } from 'lucide-react';
 import { createWorker } from 'tesseract.js';
-import { ollamaGenerate } from '../services/ollama';
+import { aiGenerate } from '../services/ai';
 
 const SnapSolver = ({ lang = 'en' }) => {
   const [image, setImage] = useState(null);
@@ -39,7 +39,7 @@ const SnapSolver = ({ lang = 'en' }) => {
         const prompt = `Solve this problem step-by-step like a friendly teacher natively in ${lang === 'ta' ? 'Tamil' : 'English'}. Explain each step clearly so a beginner can understand. Problem: "${extractedText}"`;
         
         let rawAnswer = '';
-        await ollamaGenerate(prompt, (_, full) => { rawAnswer = full; setSolution(full); });
+        await aiGenerate(prompt, (_, full) => { rawAnswer = full; setSolution(full); });
 
     } catch (e) {
         console.error(e);

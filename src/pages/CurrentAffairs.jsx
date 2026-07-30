@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Newspaper, RefreshCw, BookOpen, Tag, ExternalLink } from 'lucide-react';
 import { CURRENT_AFFAIRS } from '../data/examData';
-import { ollamaGenerate } from '../services/ollama';
+import { aiGenerate } from '../services/ai';
 
 const CATEGORIES = ['All', 'Economy', 'Education', 'Science & Tech', 'Governance', 'International Relations', 'Environment', 'Defence'];
 
@@ -21,7 +21,7 @@ const CurrentAffairs = () => {
     setLoading(true);
     try {
       let result = '';
-      await ollamaGenerate(
+      await aiGenerate(
         `You are a UPSC/TNPSC exam expert. Analyze this current affairs topic from an exam perspective:
 
 Topic: ${item.title}

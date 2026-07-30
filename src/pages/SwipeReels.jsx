@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PlayCircle, ChevronDown, CheckCircle, XCircle, Home, Loader2, Sparkles } from 'lucide-react';
-import { ollamaGenerate } from '../services/ollama';
+import { aiGenerate } from '../services/ai';
 
 const SwipeReels = ({ lang = 'en' }) => {
   const [reels, setReels] = useState([]);
@@ -38,7 +38,7 @@ Why it is True or False.
 
     try {
       let fullRaw = '';
-      await ollamaGenerate(prompt, (_, text) => { fullRaw = text; });
+      await aiGenerate(prompt, (_, text) => { fullRaw = text; });
       
       const extract = (tag) => {
          const m = fullRaw.match(new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`, 'i'));

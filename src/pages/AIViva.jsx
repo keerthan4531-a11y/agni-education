@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Mic, MicOff, Volume2, VolumeX, User, Bot, Loader2, PlayCircle, Trophy } from 'lucide-react';
-import { ollamaChat } from '../services/ollama';
+import { aiChat } from '../services/ai';
 
 const AIViva = ({ lang = 'en' }) => {
   const [isListening, setIsListening] = useState(false);
@@ -94,11 +94,11 @@ const AIViva = ({ lang = 'en' }) => {
     
     try {
       let fullRaw = '';
-      await ollamaChat([{ role: 'system', content: systemPrompt }, { role: 'user', content: 'Start the viva.' }], (_, text) => { fullRaw = text; });
+      await aiChat([{ role: 'system', content: systemPrompt }, { role: 'user', content: 'Start the viva.' }], (_, text) => { fullRaw = text; });
       setMessages([{ role: 'ai', content: fullRaw }]);
       speak(fullRaw);
     } catch(e) {
-      setMessages([{ role: 'ai', content: 'Error loading viva. Is Ollama running?' }]);
+      setMessages([{ role: 'ai', content: 'Error connecting to AI service.' }]);
     }
     setLoading(false);
   };
@@ -118,7 +118,7 @@ const AIViva = ({ lang = 'en' }) => {
           ...newHistory
       ];
       let fullRaw = '';
-      await ollamaChat(chatHistory, (_, text) => { fullRaw = text; });
+      await aiChat(chatHistory, (_, text) => { fullRaw = text; });
       
       setMessages([...newHistory, { role: 'ai', content: fullRaw }]);
       speak(fullRaw);

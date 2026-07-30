@@ -4,7 +4,7 @@ import {
   Calendar, TrendingUp, BookOpen, Star, RefreshCw, Layers, MessageCircle, Send,
   Gamepad2, Wand2, Orbit, ChevronRight, Maximize2, SkipForward, PlayCircle
 } from 'lucide-react';
-import { ollamaGenerate, ollamaChat } from '../services/ollama';
+import { aiGenerate, aiChat } from '../services/ai';
 import { EXAM_SYLLABUS, crashCourseManager } from '../data/crashCourseData';
 import ReactMarkdown from 'react-markdown';
 
@@ -153,7 +153,7 @@ Explanation: [Why this is correct]
 
     try {
       let result = '';
-      await ollamaGenerate(prompt, (_, full) => { result = full; });
+      await aiGenerate(prompt, (_, full) => { result = full; });
       
       const parts = { eli5: '', visual: '', trick: '', q: null };
       
@@ -204,7 +204,7 @@ Explanation: [Why this is correct]
       setFlashLoading(true);
       try {
         let result = '';
-        await ollamaGenerate(
+        await aiGenerate(
           `A student got this wrong: Q: ${flashContent.q.question}
 Correct answer: ${flashContent.q.options[flashContent.q.correct]}
 Explain why gently like a teacher in 2 lines. ${lang === 'ta' ? 'Use Tamil.' : ''}`, (_, full) => { result = full; });
@@ -219,7 +219,7 @@ Explain why gently like a teacher in 2 lines. ${lang === 'ta' ? 'Use Tamil.' : '
     setTeachLoading(true);
     try {
        let result = '';
-       await ollamaGenerate(
+       await aiGenerate(
           `You taught the student about "${flashTopic.name}".
 The student is trying to teach it back to you to prove they learned it.
 Student says: "${teachInput}"
@@ -240,7 +240,7 @@ If completely wrong, correct them gently. ${lang === 'ta' ? 'Use Tamil.' : ''}`,
     
     try {
       let result = '';
-      await ollamaGenerate(
+      await aiGenerate(
         `Create DAY ${day} Crash Course schedule for ${EXAM_SYLLABUS[store.exam]?.label}. ${lang === 'ta' ? 'Use Tamil.' : 'In English'}
 Focus on: ${weakNames || 'Important topics'}
 Output strictly:
@@ -269,7 +269,7 @@ Output strictly:
 
     try {
       let raw = '';
-      await ollamaGenerate(`Generate ONE MCQ on "${topic.name}". Format: Q. \nA) \nB) \nC) \nD) \nAnswer: A`, (_, full) => { raw = full; });
+      await aiGenerate(`Generate ONE MCQ on "${topic.name}". Format: Q. \nA) \nB) \nC) \nD) \nAnswer: A`, (_, full) => { raw = full; });
       const lines = raw.split('\n').filter(l => l.trim());
       const qText = lines[0]?.replace(/^Q[.\d]*\s*/, '').trim();
       const opts = []; let correct = -1;
